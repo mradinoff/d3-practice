@@ -1,4 +1,7 @@
+// DOM and D3 relationship
 var data = [10]
+
+//try experimenting by commenting out that data or individual circles
 
 var canvas = d3.select("body")
             .append("svg")
@@ -18,5 +21,5 @@ var circle2 = canvas.append("circle")
 var circles = canvas.selectAll("circle")
             .data(data)
             .attr("fill", "green")
-            .exit()
+            .exit() // as there is more circles than data
               .attr("fill", "blue")

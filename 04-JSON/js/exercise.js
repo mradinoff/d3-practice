@@ -1,4 +1,5 @@
-d3.csv("mydata.csv").then(function (data) {
+//Data types and D3
+d3.csv("mydata.csv").then(function (data) { // d3.json("mydata.json") accesses other data file
   console.log(data);
   var canvas = d3.select("body").append("svg")
     .attr("width", 500)
@@ -6,7 +7,7 @@ d3.csv("mydata.csv").then(function (data) {
 
     canvas.selectAll("rect")
       .data(data)
-      .enter()
+      .enter() 
         .append("rect")
         .attr("width", function(d) {return d.age * 10;})
         .attr("height", 48)
