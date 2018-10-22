@@ -1,4 +1,5 @@
 //Data types and D3
+// A labelled bar chart
 d3.csv("mydata.csv").then(function (data) { // d3.json("mydata.json") accesses other data file
   console.log(data);
   var canvas = d3.select("body").append("svg")
@@ -6,8 +7,8 @@ d3.csv("mydata.csv").then(function (data) { // d3.json("mydata.json") accesses o
     .attr("height", 500);
 
     canvas.selectAll("rect")
-      .data(data)
-      .enter() 
+      .data(data) // data join
+      .enter() // add missing rectangles
         .append("rect")
         .attr("width", function(d) {return d.age * 10;})
         .attr("height", 48)

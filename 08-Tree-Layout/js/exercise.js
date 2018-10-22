@@ -4,26 +4,48 @@ var canvas = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(50, 50)")
 
-  //BELOW = PRACTICING DRAWING A LINE
-// var diagonal = d3.svg.diagonal()
-//   .source({x: 10, y: 10}) //source = from, target = to
-//   .target({x: 300, y: 300})
-
-  // Ended up having to use d3 v3 instead of v5
-  //v5 uses lineHorizontal / lineVertical with data inputs
-
-
-// canvas.append("path")
-//   .attr("fill","none")
-//   .attr("stroke","black")
-//   .attr("d", diagonal);
-
-var tree = d3.layout.tree()
+var tree = d3.tree() //no longer d3.layout.tree
   .size([400, 400]);
 
-d3.json("mydata.json", function(data){
+d3.json("mydata.json").then(function(data){
 
-  var nodes = tree.nodes(data);
-  console.log(nodes)
 
+  var nodes = d3.hierarchy(data); // creates root note if in a heirarchical format such as json
+  var links = tree(nodes).links(); // lays out root hierachy based on root and descendatants (argument = root)
+  console.log(data);
+
+  var node = canvas.selectAll(".node")
+    .data(nodes)
+    .enter()
+    .append("g")
+      .attr("class", "node")
+      .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")";})
+
+  node.append("circle")
+    .attr("r", 5)
+    .attr("fill", "blue");
+ //not sure why this does not work
+
+
+ node.append("text")
+  .text(function(d) {return d.name;})
+  //not sure why this does not work
+
+
+var link = d3.linkHorizontal() //creates links between the nodes
+  .x(function(d) {
+    return d.y;
+  })
+  .y(function(d) {
+    return d.x;
+  });
+
+canvas.selectAll(".link")
+  .data(links)
+  .enter()
+    .append("path")
+    .attr("class", "link")
+    .attr("fill", "none")
+    .attr("stroke", "#adadad")
+    .attr("d", link)
 })

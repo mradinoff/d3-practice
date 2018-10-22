@@ -5,18 +5,20 @@ var svg = d3.select("svg"),
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var parseTime = d3.timeParse("%Y%m%d");
-
+//d3 time parse functionality
+//Note: d3 has a bunch of data sorting functions (refer to documentation)
 
 var x = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal(d3.schemeCategory10);
 
 var line = d3.line()
-    .curve(d3.curveBasis)
+    .curve(d3.curveBasis) //READ DOCUMENTATION
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.temperature); });
 
 d3.tsv("data.tsv", type).then(function(data) {
+//note tsv = tab seperated variables, csv = comma seperated variables
 
   var cities = data.columns.slice(1).map(function(id) {
     return {
@@ -28,6 +30,7 @@ d3.tsv("data.tsv", type).then(function(data) {
   });
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
+	//CHECK DOCUMENTATION FOR D3.EXTENT
 
   y.domain([
     d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.temperature; }); }),
@@ -77,7 +80,7 @@ function type(d, _, columns) {
 }
 
 function updateData() {
-
+//attempting to trabnsition to secondary data set
     // Get the data again
     d3.tsv("data-alt.tsv", type).then(function(data) {
       console.log(data);
